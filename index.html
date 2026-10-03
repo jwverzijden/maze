@@ -62,8 +62,18 @@
           <span id="hud-time">0:00</span>
         </div>
       </header>
-      <div id="canvas-wrap" class="canvas-wrap">
-        <canvas id="maze-canvas"></canvas>
+      <div class="board" id="board">
+        <div id="canvas-wrap" class="canvas-wrap">
+          <canvas id="maze-canvas"></canvas>
+          <div class="vert-slider" id="vert-slider">
+            <input type="range" id="sel-vert" min="0" max="1" step="1" value="0" aria-label="Vertical dimension" />
+            <span id="vert-tag" class="slider-tag">V 0</span>
+          </div>
+        </div>
+      </div>
+      <div class="horiz-slider">
+        <span id="horiz-tag" class="slider-tag">H 1</span>
+        <input type="range" id="sel-horiz" min="0" max="1" step="1" value="1" aria-label="Horizontal dimension" />
       </div>
       <div class="controls">
         <div class="dpad">
@@ -71,14 +81,6 @@
           <button id="btn-left" class="btn dp" aria-label="Move left">◀</button>
           <button id="btn-right" class="btn dp" aria-label="Move right">▶</button>
           <button id="btn-down" class="btn dp" aria-label="Move down">▼</button>
-        </div>
-        <div class="dim-selects">
-          <label>Vertical
-            <select id="sel-vert"></select>
-          </label>
-          <label>Horizontal
-            <select id="sel-horiz"></select>
-          </label>
         </div>
       </div>
     </section>

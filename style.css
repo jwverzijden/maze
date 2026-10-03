@@ -2,6 +2,9 @@
 
 :root {
   --game-bg: #0d1117;
+  color-scheme: dark;
+  --slider-track: #262c33;
+  --slider-thumb: #8b949e;
 }
 
 html, body {
@@ -100,12 +103,9 @@ button { touch-action: manipulation; user-select: none; }
 }
 
 .canvas-wrap {
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--game-bg);
+  position: relative;
+  width: fit-content;
+  line-height: 0;
 }
 #maze-canvas { display: block; }
 
@@ -127,22 +127,118 @@ button { touch-action: manipulation; user-select: none; }
 #btn-right { grid-area: 2 / 3; }
 #btn-down { grid-area: 3 / 2; }
 
-.dim-selects { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-.dim-selects label {
+.board {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vert-slider {
+  position: absolute;
+  right: 100%;
+  margin-right: 10px;
+  top: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  font-size: 12px;
-  color: #8b949e;
-  letter-spacing: .03em;
+  align-items: center;
+  gap: 8px;
 }
-select {
-  background: #1c2128;
-  color: #c9d1d9;
-  border: 1px solid #30363d;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 14px;
+
+.vert-slider input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 22px;
+  flex: 1 1 auto;
+  cursor: pointer;
+  max-height: 500px;
+  margin-top: 75px;
+}
+
+.horiz-slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 6px 16px 2px;
+}
+
+.horiz-slider input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  width: min(500px, 72vw);
+  height: 20px;
+  cursor: pointer;
+  max-width: 500px;
+}
+
+.slider-tag {
+  color: #8b949e;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .03em;
+  white-space: nowrap;
+}
+
+/* Slider track + thumb tinted with the current game palette */
+.horiz-slider input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--slider-track);
+}
+.horiz-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--slider-thumb);
+}
+.horiz-slider input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--slider-track);
+}
+.horiz-slider input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--slider-thumb);
+  border: none;
+}
+
+.vert-slider input[type="range"]::-webkit-slider-runnable-track {
+  width: 6px;
+  border-radius: 3px;
+  background: var(--slider-track);
+}
+.vert-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-left: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--slider-thumb);
+}
+.vert-slider input[type="range"]::-moz-range-track {
+  width: 6px;
+  border-radius: 3px;
+  background: var(--slider-track);
+}
+.vert-slider input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--slider-thumb);
+  border: none;
 }
 
 /* Overlays */

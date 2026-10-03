@@ -148,12 +148,15 @@ const hudProgress = $('hud-progress');
 const hudCoords = $('hud-coords');
 const hudSteps = $('hud-steps');
 const hudTime = $('hud-time');
-const canvasWrap = $('canvas-wrap');
+const board = $('board');
+const vertSlider = $('vert-slider');
 const canvas = $('maze-canvas');
 const ctx = canvas.getContext('2d');
 
 const selVert = $('sel-vert');
 const selHoriz = $('sel-horiz');
+const vertTag = $('vert-tag');
+const horizTag = $('horiz-tag');
 const finishStats = $('finish-stats');
 
 let dpr = 1;
@@ -172,7 +175,9 @@ function paletteFromSeed(seed) {
     node: hsl(hue, 34, 62),
     player: hsl(hue, 80, 68),
     goal: hsl((hue + 150) % 360, 55, 60),
-    start: hsl(hue, 18, 42)
+    start: hsl(hue, 18, 42),
+    sliderTrack: hsl(hue, 25, 17),
+    sliderThumb: hsl(hue, 45, 62)
   };
 }
 
@@ -183,9 +188,12 @@ let palette = paletteFromSeed(0n);
    ============================================================ */
 
 function resizeCanvas() {
-  const rect = canvasWrap.getBoundingClientRect();
-  const s = Math.floor(Math.min(rect.width, rect.height));
-  if (s <= 0) return;
+  const rect = board.getBoundingClientRect();
+  const w = rect.width, h = rect.height;
+  if (w <= 0 || h <= 0) return;
+  const sliderW = vertSlider.offsetWidth || 40;
+  const gap = 10; // keep in sync with .vert-slider margin-right
+  const s = Math.floor(Math.max(1, Math.min(h, w - 2 * (sliderW + gap))));
   sizeCss = s;
   dpr = window.devicePixelRatio || 1;
   canvas.style.width = s + 'px';
@@ -407,22 +415,25 @@ function updateHud() {
 }
 
 /* ============================================================
-   Dimension selects
+   Dimension sliders
    ============================================================ */
 
-function populateDropdowns() {
-  selVert.innerHTML = '';
-  selHoriz.innerHTML = '';
-  for (let i = 0; i < state.D; i++) {
-    selVert.add(new Option(i, String(i)));
-    selHoriz.add(new Option(i, String(i)));
-  }
-  syncDropdowns();
+function setupSliders() {
+  selVert.min = '0';
+  selVert.max = String(state.D - 1);
+  selVert.step = '1';
+  selHoriz.min = '0';
+  selHoriz.max = String(state.D - 1);
+  selHoriz.step = '1';
+  selHoriz.style = `color: ${palette.bg}`;
+  syncSliders();
 }
 
-function syncDropdowns() {
+function syncSliders() {
   selVert.value = String(state.selV);
   selHoriz.value = String(state.selH);
+  vertTag.textContent = 'V ' + state.selV;
+  horizTag.textContent = 'H ' + state.selH;
 }
 
 function setSelection(v, h) {
@@ -431,7 +442,7 @@ function setSelection(v, h) {
 
   if (!fade) {
     if (v === state.selV && h === state.selH) {
-      syncDropdowns();
+      syncSliders();
       return;
     }
     startFade(() => {
@@ -439,7 +450,7 @@ function setSelection(v, h) {
         state.selV = pendingSelV;
         state.selH = pendingSelH;
         rebuildGrid();
-        syncDropdowns();
+        syncSliders();
         updateHud();
         saveGame();
       }
@@ -481,7 +492,9 @@ function move(dir) {
 function setupGameUI() {
   palette = paletteFromSeed(state.seed);
   document.documentElement.style.setProperty('--game-bg', palette.bg);
-  populateDropdowns();
+  document.documentElement.style.setProperty('--slider-track', palette.sliderTrack);
+  document.documentElement.style.setProperty('--slider-thumb', palette.sliderThumb);
+  setupSliders();
   updateHud();
 }
 
@@ -535,7 +548,7 @@ function restartGame() {
   state.elapsedMs = 0;
   runStart = performance.now();
   rebuildGrid();
-  populateDropdowns();
+  setupSliders();
   updateHud();
   draw();
   saveGame();
@@ -675,7 +688,7 @@ function bindUI() {
     if (currentScreen !== 'game') return;
 
     const el = document.activeElement;
-    if (el && el.tagName === 'SELECT') return; // let the dropdown handle its keys
+    if (el && (el.tagName === 'SELECT' || (el.tagName === 'INPUT' && el.type === 'range'))) return; // let sliders/dropdowns handle their keys
 
     switch (k) {
       case 'ArrowUp': case 'w': case 'W': e.preventDefault(); move('up'); break;
@@ -693,7 +706,7 @@ function bindUI() {
   });
 
   if (window.ResizeObserver) {
-    new ResizeObserver(() => resizeCanvas()).observe(canvasWrap);
+    new ResizeObserver(() => resizeCanvas()).observe(board);
   }
 
   window.addEventListener('beforeunload', () => saveGame());
