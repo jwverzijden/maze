@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maze — a multidimensional maze</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- Main menu -->
+    <section id="main-menu" class="screen centered">
+      <h1 class="title">MAZE</h1>
+      <p class="subtitle">a multidimensional maze</p>
+      <button id="btn-new-game" class="btn">New Game</button>
+      <button id="btn-continue" class="btn" disabled>Continue Game</button>
+    </section>
+
+    <!-- New game setup -->
+    <section id="new-game-menu" class="screen centered hidden">
+      <h1 class="title">New Game</h1>
+      <div class="settings">
+        <div class="setting">
+          <label for="val-d">Dimensions</label>
+          <div class="stepper">
+            <button id="d-dec" class="btn sm" aria-label="Decrease dimensions">−</button>
+            <span id="val-d" class="stepper-value">2</span>
+            <button id="d-inc" class="btn sm" aria-label="Increase dimensions">+</button>
+          </div>
+        </div>
+        <div class="setting">
+          <label for="val-l">Maze length</label>
+          <div class="stepper">
+            <button id="l-dec" class="btn sm" aria-label="Decrease length">−</button>
+            <span id="val-l" class="stepper-value">5</span>
+            <button id="l-inc" class="btn sm" aria-label="Increase length">+</button>
+          </div>
+        </div>
+        <div class="setting">
+          <label>Seed</label>
+          <div class="seed-row">
+            <span id="val-seed" class="seed-value">—</span>
+            <button id="btn-reroll" class="btn sm">Reroll</button>
+          </div>
+        </div>
+      </div>
+      <button id="btn-start" class="btn">Start Game</button>
+      <button id="btn-back-main" class="btn ghost">Back</button>
+    </section>
+
+    <!-- Game screen -->
+    <section id="game-screen" class="hidden">
+      <header class="hud">
+        <button id="btn-pause" class="btn sm">Pause</button>
+        <div class="hud-center">
+          <div id="hud-coords">[0, 0]</div>
+          <div id="hud-progress" class="hud-progress">Goal 0/2</div>
+        </div>
+        <div class="hud-right">
+          <span id="hud-steps">Steps 0</span>
+          <span id="hud-time">0:00</span>
+        </div>
+      </header>
+      <div id="canvas-wrap" class="canvas-wrap">
+        <canvas id="maze-canvas"></canvas>
+      </div>
+      <div class="controls">
+        <div class="dpad">
+          <button id="btn-up" class="btn dp" aria-label="Move up">▲</button>
+          <button id="btn-left" class="btn dp" aria-label="Move left">◀</button>
+          <button id="btn-right" class="btn dp" aria-label="Move right">▶</button>
+          <button id="btn-down" class="btn dp" aria-label="Move down">▼</button>
+        </div>
+        <div class="dim-selects">
+          <label>Vertical
+            <select id="sel-vert"></select>
+          </label>
+          <label>Horizontal
+            <select id="sel-horiz"></select>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pause overlay -->
+    <section id="pause-menu" class="overlay hidden">
+      <div class="menu-card">
+        <h2>Paused</h2>
+        <button id="btn-resume" class="btn">Continue</button>
+        <button id="btn-restart" class="btn">Restart</button>
+        <button id="btn-quit" class="btn ghost">Main Menu</button>
+      </div>
+    </section>
+
+    <!-- Finish overlay -->
+    <section id="finish-menu" class="overlay hidden">
+      <div class="menu-card">
+        <h2>You made it!</h2>
+        <p id="finish-stats"></p>
+        <button id="btn-again" class="btn">Play Again</button>
+        <button id="btn-finish-main" class="btn ghost">Main Menu</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="game.js" defer></script>
+</body>
+</html>

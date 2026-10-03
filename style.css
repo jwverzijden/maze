@@ -1,0 +1,173 @@
+* { box-sizing: border-box; }
+
+:root {
+  --game-bg: #0d1117;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: #0a0c10;
+  color: #c9d1d9;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app { height: 100%; }
+
+.hidden { display: none !important; }
+
+button { touch-action: manipulation; user-select: none; }
+
+/* Buttons */
+.btn {
+  background: #1c2128;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.btn:hover:not(:disabled) { background: #24292f; border-color: #444c56; }
+.btn:active:not(:disabled) { background: #2a3138; }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn.sm { padding: 9px 14px; font-size: 14px; }
+.btn.ghost { background: transparent; border-color: transparent; color: #8b949e; }
+.btn.ghost:hover:not(:disabled) { color: #c9d1d9; background: transparent; }
+.btn.dp { width: 54px; height: 54px; padding: 0; font-size: 20px; border-radius: 12px; }
+
+/* Screens */
+.screen { min-height: 100%; }
+.screen.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.title { font-size: 40px; letter-spacing: .15em; margin: 0; }
+.subtitle { color: #8b949e; margin: 0 0 12px; font-size: 15px; }
+
+/* New game settings */
+.settings { display: flex; flex-direction: column; gap: 18px; margin: 8px 0 4px; }
+.setting { display: flex; flex-direction: column; gap: 8px; }
+.setting > label { color: #8b949e; font-size: 13px; letter-spacing: .04em; }
+.stepper { display: flex; align-items: center; gap: 14px; justify-content: center; }
+.stepper-value { min-width: 28px; font-size: 20px; font-variant-numeric: tabular-nums; }
+.seed-row { display: flex; align-items: center; gap: 10px; }
+.seed-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 14px;
+  color: #a5b6c9;
+  background: #12161c;
+  border: 1px solid #262c33;
+  border-radius: 8px;
+  padding: 8px 12px;
+  min-width: 200px;
+}
+
+/* Game screen */
+#game-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--game-bg);
+}
+.hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+}
+.hud-center { color: #8b949e; font-size: 14px; text-align: center; }
+.hud-progress { margin-top: 2px; }
+.hud-right {
+  display: flex;
+  gap: 14px;
+  color: #8b949e;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.canvas-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--game-bg);
+}
+#maze-canvas { display: block; }
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px 22px;
+}
+.dpad {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  grid-template-columns: repeat(3, auto);
+  gap: 8px;
+}
+#btn-up { grid-area: 1 / 2; }
+#btn-left { grid-area: 2 / 1; }
+#btn-right { grid-area: 2 / 3; }
+#btn-down { grid-area: 3 / 2; }
+
+.dim-selects { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+.dim-selects label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+  color: #8b949e;
+  letter-spacing: .03em;
+}
+select {
+  background: #1c2128;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+/* Overlays */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 6, 9, .72);
+  padding: 24px;
+  z-index: 10;
+}
+.menu-card {
+  background: #151a20;
+  border: 1px solid #262c33;
+  border-radius: 16px;
+  padding: 30px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 240px;
+  text-align: center;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .5);
+}
+.menu-card h2 { margin: 0 0 4px; font-size: 24px; }
+.menu-card p { margin: 0; color: #8b949e; font-size: 15px; }
